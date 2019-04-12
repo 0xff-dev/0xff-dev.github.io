@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://yoursite.com/2019/04/12/LRUCache/</loc>
+    <loc>https://stevenshuang.github.io/2019/04/12/LRUCache/</loc>
     <lastmod>2019-04-12</lastmod>
   </url>  <url>
-    <loc>http://yoursite.com/2019/04/12/hello-world/</loc>
+    <loc>https://stevenshuang.github.io/2019/04/12/hello-world/</loc>
     <lastmod>2019-04-12</lastmod>
   </url>
 </urlset>
