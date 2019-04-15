@@ -2,6 +2,7 @@
 
 
 ## 使用的主题是[Yelee](https://github.com/MOxFIVE/hexo-theme-yelee.git)
+## [Yelee使用手册](http://moxfive.coding.me/yelee/)
 
 ## 美化blog的一点建议
 * [next主题下载](https://github.com/iissnan/hexo-theme-next)
