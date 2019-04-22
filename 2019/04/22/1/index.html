@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no">
+<meta name="author" content="stevenshuang">
+
+
+
+<meta name="description" content="&amp;nbsp;&amp;nbsp; 在看python的GUI编程， 发现tkinter上手难度还ok，就用他写一个贪吃蛇.">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="python用tkinter实现贪吃蛇">
+<meta property="og:url" content="https://stevenshuang.github.io/2019/04/22/1/index.html">
+<meta property="og:site_name" content="流浪者">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp; 在看python的GUI编程， 发现tkinter上手难度还ok，就用他写一个贪吃蛇.">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-22T07:34:58.755Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="python用tkinter实现贪吃蛇">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp; 在看python的GUI编程， 发现tkinter上手难度还ok，就用他写一个贪吃蛇.">
+
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="流浪者" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>python用tkinter实现贪吃蛇 | 流浪者</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+    <script src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5cb4898503d9a8fb"></script>
+
+
+
+
+</head></html>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">stevenshuang</a></h1>
+        </hgroup>
+
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false">
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class="no-result">No results found <i class="fa fa-spinner fa-pulse"></i></p>
+        
+
+
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:stevenshuang521@gmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://www.github.com/stevenshuang" title="GitHub"></a>
+                            
+                                <a class="fa Instagram" href="https://www.instagram.com/stevenshuang.coco" title="Instagram"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://sherly-shi.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">stevenshuang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">stevenshuang</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:stevenshuang521@gmail.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://www.github.com/stevenshuang" title="GitHub"></a>
+                            
+                                <a class="fa Instagram" target="_blank" href="https://www.instagram.com/stevenshuang.coco" title="Instagram"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我">
+</nav>
+      <div class="body-wrap"><article id="post-snake" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/04/22/1/" class="article-date">
+      <time datetime="2019-04-22T07:34:58.755Z" itemprop="datePublished">2019-04-22</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      python用tkinter实现贪吃蛇
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>&nbsp;&nbsp; 在看python的<code>GUI</code>编程， 发现<code>tkinter</code>上手难度还ok，就用他写一个贪吃蛇.<br><a id="more"></a></p>
+<h2 id="贪吃蛇"><a href="#贪吃蛇" class="headerlink" title="贪吃蛇"></a>贪吃蛇</h2><h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><blockquote>
+<p>主要的思路是把<code>键盘事件</code>与主界面的渲染分开, 🐍的操作就是上下左右，遇到墙，或者进自己的身体，游戏结束。对蛇单开一个线程<br>主界面就是canvas做矩形. 通过<code>queue</code>进行通信.</p>
+</blockquote>
+<h3 id="要掌握的知识"><a href="#要掌握的知识" class="headerlink" title="要掌握的知识"></a>要掌握的知识</h3><ol>
+<li><code>Thread</code>使用</li>
+<li><code>Queue</code>使用</li>
+<li>蛇的运动形成(遇到食物，直接在蛇尾添加， 而没有食物的情况，把去掉蛇尾，添加下一个位置即可)</li>
+<li>矩形相交算法见函数<code>is_rect_overlap</code>.</li>
+</ol>
+<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"><span class="keyword">import</span> queue</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> tkinter <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> randint</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_point</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x, y, x+<span class="number">10</span>, y+<span class="number">10</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_rect_overlap</span><span class="params">(p1, p2)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">not</span>(p1[<span class="number">0</span>]+<span class="number">10</span>&lt;p2[<span class="number">0</span>] <span class="keyword">or</span> p1[<span class="number">1</span>]+<span class="number">10</span>&lt;p2[<span class="number">1</span>] <span class="keyword">or</span></span><br><span class="line">            p2[<span class="number">0</span>]+<span class="number">10</span>&lt;p1[<span class="number">0</span>] <span class="keyword">or</span> p2[<span class="number">1</span>]+<span class="number">10</span>&lt;p1[<span class="number">1</span>])</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Window</span><span class="params">(Tk)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, width, height, queue: queue.Queue)</span>:</span></span><br><span class="line">        super(Window, self).__init__()</span><br><span class="line">        self.q = queue</span><br><span class="line">        self.w, self.h = width, height</span><br><span class="line">        self.is_game_over = <span class="literal">False</span></span><br><span class="line">        self.canvas = Canvas(self, width=self.w, height=self.h, bg=<span class="string">"#fff"</span>)</span><br><span class="line">        self.canvas.pack()</span><br><span class="line">        self.queue_handle()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_draw</span><span class="params">(self, data, color: str)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> _data <span class="keyword">in</span> data:</span><br><span class="line">            self.canvas.create_rectangle(get_point(*_data), fill=color, outline=<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">queue_handle</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">                task = self.q.get(block=<span class="literal">False</span>)</span><br><span class="line">                <span class="keyword">if</span> task[<span class="number">0</span>] == <span class="string">'game_over'</span>:</span><br><span class="line">                    self.stop()</span><br><span class="line">                <span class="keyword">if</span> task[<span class="number">0</span>] == <span class="string">'move'</span>:</span><br><span class="line">                    self._draw(task[<span class="number">1</span>], <span class="string">'green'</span>)</span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> _:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self.is_game_over:</span><br><span class="line">                self.canvas.after(<span class="number">100</span>, self.queue_handle)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">stop</span><span class="params">(self)</span>:</span></span><br><span class="line">        self.is_game_over = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Snake</span><span class="params">(threading.Thread)</span>:</span></span><br><span class="line">    <span class="string">"""单独的线程处理按键"""</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, window: Window, queue: queue.Queue)</span>:</span></span><br><span class="line">        super(Snake, self).__init__()</span><br><span class="line">        self.window = window</span><br><span class="line">        self.queue = queue</span><br><span class="line">        self.daemon = <span class="literal">True</span></span><br><span class="line">        self.snake = [(<span class="number">10</span>, <span class="number">0</span>), (<span class="number">20</span>, <span class="number">0</span>), (<span class="number">30</span>, <span class="number">0</span>)]</span><br><span class="line">        self.dir = <span class="string">'Right'</span></span><br><span class="line">        self.food = Food(self.window, self.queue)</span><br><span class="line">        self.start()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.window.is_game_over:</span><br><span class="line">            self._delete()</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.window.is_game_over:</span><br><span class="line">            self.queue.put((<span class="string">'move'</span>, self.snake))</span><br><span class="line">            time.sleep(<span class="number">0.5</span>)</span><br><span class="line">            self.move()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">key_press</span><span class="params">(self, event)</span>:</span></span><br><span class="line">        self.dir = event.keysym</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_next_point</span><span class="params">(self)</span>:</span></span><br><span class="line">        now_x, now_y = self.snake[<span class="number">-1</span>]</span><br><span class="line">        <span class="keyword">if</span> self.dir == <span class="string">'Left'</span>:</span><br><span class="line">            now_x = now_x<span class="number">-10</span></span><br><span class="line">        <span class="keyword">if</span> self.dir == <span class="string">'Up'</span>:</span><br><span class="line">            now_y = now_y<span class="number">-10</span></span><br><span class="line">        <span class="keyword">if</span> self.dir == <span class="string">'Right'</span>:</span><br><span class="line">            now_x = now_x+<span class="number">10</span></span><br><span class="line">        <span class="keyword">if</span> self.dir == <span class="string">'Down'</span>:</span><br><span class="line">            now_y = now_y+<span class="number">10</span></span><br><span class="line">        <span class="keyword">return</span> now_x, now_y</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(self)</span>:</span></span><br><span class="line">        np = self._next_point()</span><br><span class="line">        print(<span class="string">'snake head: '</span>, np)</span><br><span class="line">        width, height = self.window.w, self.window.h</span><br><span class="line">        <span class="keyword">if</span> np <span class="keyword">in</span> self.snake <span class="keyword">or</span> np[<span class="number">0</span>] &lt; <span class="number">0</span> <span class="keyword">or</span> np[<span class="number">0</span>] &gt;= width <span class="keyword">or</span> np[<span class="number">1</span>] &lt; <span class="number">0</span> <span class="keyword">or</span> np[<span class="number">1</span>] &gt;= height:</span><br><span class="line">            self.queue.put((<span class="string">'game_over'</span>, <span class="literal">True</span>))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> is_rect_overlap(np, self.food.pos):</span><br><span class="line">                pos = self.snake[<span class="number">0</span>]</span><br><span class="line">                self.snake.pop(<span class="number">0</span>)</span><br><span class="line">                self.window.canvas.create_rectangle(get_point(*pos), fill=<span class="string">'white'</span>, outline=<span class="string">''</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                self.food.gen_point()</span><br><span class="line">            self.snake.append(np)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Food</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, window: Window, queue: queue.Queue)</span>:</span></span><br><span class="line">        self.window = window</span><br><span class="line">        self.queue = queue</span><br><span class="line">        self.pos = (<span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">        self.gen_point()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">gen_point</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="string">"""注意蛇身的位置"""</span></span><br><span class="line">        self.window.canvas.create_rectangle(get_point(*self.pos), fill=<span class="string">'white'</span>, outline=<span class="string">""</span>)</span><br><span class="line">        self.pos = randint(<span class="number">0</span>, self.window.w), randint(<span class="number">0</span>, self.window.h)</span><br><span class="line">        print(<span class="string">"new pos: "</span>, self.pos)</span><br><span class="line">        self.window.canvas.create_rectangle(get_point(*self.pos), fill=<span class="string">'red'</span>, outline=<span class="string">''</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">q = queue.Queue()</span><br><span class="line">w = Window(<span class="number">500</span>, <span class="number">500</span>, q)</span><br><span class="line">w.title = <span class="string">'贪吃蛇'</span></span><br><span class="line">snake = Snake(w, q)</span><br><span class="line">w.bind(<span class="string">'&lt;Key-Left&gt;'</span>, snake.key_press)</span><br><span class="line">w.bind(<span class="string">'&lt;Key-Right&gt;'</span>, snake.key_press)</span><br><span class="line">w.bind(<span class="string">'&lt;Key-Up&gt;'</span>, snake.key_press)</span><br><span class="line">w.bind(<span class="string">'&lt;Key-Down&gt;'</span>, snake.key_press)</span><br><span class="line">w.mainloop()</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>注意蛇是如何运动的就可以容易的理解贪吃蛇的思想，可以在上面做更多的扩展.</p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2019/04/19/1/">
+                    使用golang实现简单验证码图片
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#贪吃蛇"><span class="toc-number">1.</span> <span class="toc-text">贪吃蛇</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#思路"><span class="toc-number">1.1.</span> <span class="toc-text">思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#要掌握的知识"><span class="toc-number">1.2.</span> <span class="toc-text">要掌握的知识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码"><span class="toc-number">1.3.</span> <span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-4 i,
+        .toc-level-4 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+
+    
+        <div class="addthis_sharing_toolbox"></div>
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2019/04/19/1/" title="下一篇: 使用golang实现简单验证码图片">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/04/22/1/">python用tkinter实现贪吃蛇</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/19/1/">使用golang实现简单验证码图片</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/17/1/">mac下如何使用百度云的加速下载</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/15/1/">字符串修改</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/12/2/">LRUCache(最近最久未使用算法)题解</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/12/1/">Hello World</a></li></ul>
+
+
+
+
+  
+  <!-- Gitment评论插件通用代码 -->
+<div id="git"></div>
+<link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
+<script src="https://jjeejj.github.io/js/gitment.js"></script>
+<script>
+var gitment = new Gitment({
+  owner: "stevenshuang",
+  repo: "stevenshuang.github.io",
+  oauth: {
+    client_id: "4d09482d6653370cea29",
+    client_secret:"eef93d691899860d60f28100468f976cd04326b1",
+  },
+})
+gitment.render('git')
+</script>
+<!-- Gitment代码结束 -->
+
+  
+
+
+
+    <script>
+        
+    </script>
+
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2019 stevenshuang
+            </div>
+            <div class="footer-right">
+                <i class="fa fa-heart animated infinite pulse"></i>
+                <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style="display:none">
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style="display:none">
+                        <span id="page-visit" title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+    <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script src="//cdn.bootcss.com/mathjax/2.6.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+    <script>
+        var originTitle = document.title;
+        var titleTime;
+        document.addEventListener("visibilitychange", function() {
+            if (document.hidden) {
+                document.title = "(つェ⊂) 我藏好了哦~ " + originTitle;
+                clearTimeout(titleTime);
+            }
+            else {
+                document.title = "(*´∇｀*) 被你发现啦~ " + originTitle;
+                titleTime = setTimeout(function() {
+                    document.title = originTitle;
+                }, 2000);
+            }
+        })
+    </script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
