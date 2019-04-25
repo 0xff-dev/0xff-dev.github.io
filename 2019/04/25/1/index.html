@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="&amp;nbsp;&amp;nbsp;Leetcode 编辑字符串使用最少的步数让两个字符串相同. 自己之前遇到过没有做，今天做了总结一下.">
+<meta name="description" content="&amp;nbsp;&amp;nbsp; Leetcode Divisor Game这道题，理解为博弈算法，判断最后输赢的问题。">
 <meta name="keywords" content="go,leetcode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="字符串修改">
-<meta property="og:url" content="https://stevenshuang.github.io/2019/04/15/1/index.html">
+<meta property="og:title" content="1025 Divisor Game 题解">
+<meta property="og:url" content="https://stevenshuang.github.io/2019/04/25/1/index.html">
 <meta property="og:site_name" content="流浪者">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;Leetcode 编辑字符串使用最少的步数让两个字符串相同. 自己之前遇到过没有做，今天做了总结一下.">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp; Leetcode Divisor Game这道题，理解为博弈算法，判断最后输赢的问题。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-15T13:11:18.333Z">
+<meta property="og:updated_time" content="2019-04-25T03:59:09.933Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="字符串修改">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;Leetcode 编辑字符串使用最少的步数让两个字符串相同. 自己之前遇到过没有做，今天做了总结一下.">
+<meta name="twitter:title" content="1025 Divisor Game 题解">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp; Leetcode Divisor Game这道题，理解为博弈算法，判断最后输赢的问题。">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>字符串修改 | 流浪者</title>
+<title>1025 Divisor Game 题解 | 流浪者</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -211,11 +211,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我">
 </nav>
-      <div class="body-wrap"><article id="post-edit-distance" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-DivisorGame" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/04/15/1/" class="article-date">
-      <time datetime="2019-04-15T13:11:18.333Z" itemprop="datePublished">2019-04-15</time>
+      <a href="/2019/04/25/1/" class="article-date">
+      <time datetime="2019-04-25T03:59:09.932Z" itemprop="datePublished">2019-04-25</time>
 </a>
 
 
@@ -230,7 +230,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      字符串修改
+      1025 Divisor Game 题解
     </h1>
   
 
@@ -251,22 +251,22 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&nbsp;&nbsp;<code>Leetcode</code> 编辑字符串使用最少的步数让两个字符串相同. 自己之前遇到过没有做，今天做了总结一下.<br><a id="more"></a></p>
-<h2 id="Edit-Distance"><a href="#Edit-Distance" class="headerlink" title="Edit Distance"></a>Edit Distance</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><blockquote>
-<p>Given two words <code>word1</code> and <code>word2</code>, find the minimum number of operations required to convert <code>word1</code> to <code>word2</code>.<br>You have the following 3 operations permitted on a word:</p>
-<ol>
-<li>Insert a character</li>
-<li>Delete a character</li>
-<li>Replace a character</li>
-</ol>
+        <p>&nbsp;&nbsp; <code>Leetcode</code> Divisor Game这道题，理解为博弈算法，判断最后输赢的问题。<br><a id="more"></a></p>
+<h2 id="Divisor-Game"><a href="#Divisor-Game" class="headerlink" title="Divisor Game"></a>Divisor Game</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><blockquote>
+<p>Alice and Bob take turns playing a game, with Alice starting first.<br>Initially, there is a number N on the chalkboard.  On each player’s turn, that player makes a move consisting of:</p>
+<ul>
+<li>Choosing any <code>x</code> with <code>0 &lt; x &lt; N</code> and <code>N % x == 0</code>.</li>
+<li>Replacing the number <code>N</code> on the chalkboard with <code>N - x</code>.<br>Also, if a player cannot make a move, they lose the game.<br>Return <code>True</code> if and only if Alice wins the game, assuming both players play optimally.</li>
+</ul>
 </blockquote>
-<h3 id="输入用例"><a href="#输入用例" class="headerlink" title="输入用例"></a>输入用例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: word1 = &quot;horse&quot;, word2 = &quot;ros&quot;</span><br><span class="line">Output: 3</span><br><span class="line">Explanation:</span><br><span class="line">horse -&gt; rorse (replace &apos;h&apos; with &apos;r&apos;)</span><br><span class="line">rorse -&gt; rose (remove &apos;r&apos;)</span><br><span class="line">rose -&gt; ros (remove &apos;e&apos;)</span><br></pre></td></tr></table></figure>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><blockquote>
-<p>使用动态规划来解决，<code>dp[i][j]</code> 含义是word1前i个字符变成word2前j个字符所需的最小步数.<br>由此我们可以得出状态转移方程:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">当word1[i] == word2[j]的时候 dp[i][j] = dp[i-1][j-1] 不需要操作</span><br><span class="line">当word1[i] != word2[j]的时候 dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])+1寻找最细哦啊的操作步骤</span><br></pre></td></tr></table></figure></p>
+<h3 id="输入用例"><a href="#输入用例" class="headerlink" title="输入用例"></a>输入用例</h3><p>Example1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: 2</span><br><span class="line">Output: true</span><br><span class="line">Explanation: Alice chooses 1, and Bob has no more moves.</span><br></pre></td></tr></table></figure></p>
+<p>Example2:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: 3</span><br><span class="line">Output: false</span><br><span class="line">Explanation: Alice chooses 1, Bob chooses 1, and Alice has no more moves.</span><br></pre></td></tr></table></figure></p>
+<h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><blockquote>
+<p>采取打表的形式计算。<code>array[i]</code>表示当<code>N=i</code>的时候<code>先选i的人</code>是否可以胜利. 接下来就是对<code>array[i]</code>的计算<br>每次可选的数字都是<code>N</code>的因数，所以先计算<code>N</code>的因数，对每个因数进行计算，判断<code>Alice</code>是否剋胜利。只要有一个胜利即可.</p>
 </blockquote>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">minDistance</span><span class="params">(word1 <span class="keyword">string</span>, word2 <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	w1, w2 := <span class="built_in">len</span>(word1), <span class="built_in">len</span>(word2)</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(word2) == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> w1</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(word1) == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> w2</span><br><span class="line">	&#125;</span><br><span class="line">	dp := <span class="built_in">make</span>([][]<span class="keyword">int</span>, w1+<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; w1+<span class="number">1</span>; i++ &#123;</span><br><span class="line">		dp[i] = <span class="built_in">make</span>([]<span class="keyword">int</span>, w2+<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 初始化dp</span></span><br><span class="line">    <span class="comment">// word1与长度为0的word2做匹配的时候所需的步数.</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; w1+<span class="number">1</span>; i++ &#123;</span><br><span class="line">		dp[i][<span class="number">0</span>] = i</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// word1长度为0与word2进行匹配所需的步数</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; w2+<span class="number">1</span>; i++ &#123;</span><br><span class="line">		dp[<span class="number">0</span>][i] = i</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= w1; i++ &#123;</span><br><span class="line">		<span class="keyword">for</span> j := <span class="number">1</span>; j &lt;= w2; j++ &#123;</span><br><span class="line">			<span class="keyword">if</span> word1[i<span class="number">-1</span>] == word2[j<span class="number">-1</span>] &#123;</span><br><span class="line">				dp[i][j] = dp[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				dp[i][j] = min(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>], dp[i<span class="number">-1</span>][j<span class="number">-1</span>])+<span class="number">1</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> dp[w1][w2]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">min</span><span class="params">(args ...<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	minNum := args[<span class="number">0</span>]</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt; <span class="built_in">len</span>(args); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> args[i] &lt; minNum &#123;</span><br><span class="line">			minNum = args[i]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> minNum</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="To-sum-up"><a href="#To-sum-up" class="headerlink" title="To sum up"></a>To sum up</h2><blockquote>
-<p>在做本题的时候自己想到的是类似最长公共子序列的求解，但是疏忽了不想等的时更新dp的规则，以及初始化的问题。<br>最终参考了<a href="http://hs-yeah.github.io/acm/2014/07/16/01-HNUOJ-10411" target="_blank" rel="noopener">ACM 题目：字符串的修改</a>使得此题解决。</p>
+<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">factor</span><span class="params">(n <span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">	res := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt; n; i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> n % i == <span class="number">0</span> &#123;</span><br><span class="line">			res = <span class="built_in">append</span>(res, i)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">divisorGame</span><span class="params">(N <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> N == <span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> N == <span class="number">2</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line">	res := <span class="built_in">make</span>([]<span class="keyword">bool</span>, N+<span class="number">1</span>)</span><br><span class="line">	res[<span class="number">1</span>] = <span class="literal">false</span></span><br><span class="line">	res[<span class="number">2</span>] = <span class="literal">true</span></span><br><span class="line">	<span class="keyword">if</span> N &lt;= <span class="number">2</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> res[N]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">3</span>; i &lt;= N; i++ &#123;</span><br><span class="line">		flag := <span class="literal">false</span></span><br><span class="line">		fac := factor(i)</span><br><span class="line">		<span class="keyword">for</span> _, item := <span class="keyword">range</span> fac &#123;</span><br><span class="line">            <span class="comment">// alice先选的item, 所以对于剩余的i-item就是bob是否可以胜利，</span></span><br><span class="line">			flag = flag || !res[i-item]</span><br><span class="line">		&#125;</span><br><span class="line">		res[i] = flag</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res[N]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
+<p>其实这道题自信的分析会发现，是判断问题的奇偶性即可。可以在这道题的讨论区找到答案。</p>
 </blockquote>
 
       
@@ -280,15 +280,15 @@
     <nav id="article-nav">
         
             <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2019/04/17/1/">
-                    mac下如何使用百度云的加速下载
+                <a href="/2019/04/25/2/">
+                    360企业安全笔试算法题
                 </a>
             </div>
         
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2019/04/12/2/">
-                    LRUCache(最近最久未使用算法)题解
+                <a href="/2019/04/22/1/">
+                    python用tkinter实现贪吃蛇
                 </a>
             </div>
         
@@ -300,7 +300,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Edit-Distance"><span class="toc-number">1.</span> <span class="toc-text">Edit Distance</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-number">1.1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入用例"><span class="toc-number">1.2.</span> <span class="toc-text">输入用例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法"><span class="toc-number">1.3.</span> <span class="toc-text">解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分析"><span class="toc-number">1.3.1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码"><span class="toc-number">1.3.2.</span> <span class="toc-text">代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-sum-up"><span class="toc-number">2.</span> <span class="toc-text">To sum up</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Divisor-Game"><span class="toc-number">1.</span> <span class="toc-text">Divisor Game</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-number">1.1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入用例"><span class="toc-number">1.2.</span> <span class="toc-text">输入用例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">1.3.</span> <span class="toc-text">解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分析"><span class="toc-number">1.3.1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码"><span class="toc-number">1.3.2.</span> <span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -344,7 +344,7 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2019/04/17/1/" title="上一篇: mac下如何使用百度云的加速下载">
+            <a href="/2019/04/25/2/" title="上一篇: 360企业安全笔试算法题">
                 <i class="fa fa-angle-left"></i>
             </a>
         
@@ -352,7 +352,7 @@
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2019/04/12/2/" title="下一篇: LRUCache(最近最久未使用算法)题解">
+            <a href="/2019/04/22/1/" title="下一篇: python用tkinter实现贪吃蛇">
                 <i class="fa fa-angle-right"></i>
             </a>
         
