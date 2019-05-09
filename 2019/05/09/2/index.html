@@ -15,18 +15,18 @@
 
 
 
-<meta name="description" content="&amp;nbsp;&amp;nbsp; Leetcode Divisor Game这道题，理解为博弈算法，判断最后输赢的问题。">
+<meta name="description" content="&amp;nbsp;&amp;nbsp;Leetcode上面的一道题(166), 计算两个数相除的结果，有循环小数的情况要1.(6)这样表示.()里面是循环节.">
 <meta name="keywords" content="go,leetcode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="1025 Divisor Game 题解">
-<meta property="og:url" content="https://stevenshuang.github.io/2019/04/25/1/index.html">
+<meta property="og:title" content="计算循环小数">
+<meta property="og:url" content="https://stevenshuang.github.io/2019/05/09/2/index.html">
 <meta property="og:site_name" content="流浪者">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp; Leetcode Divisor Game这道题，理解为博弈算法，判断最后输赢的问题。">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp;Leetcode上面的一道题(166), 计算两个数相除的结果，有循环小数的情况要1.(6)这样表示.()里面是循环节.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-25T03:59:09.933Z">
+<meta property="og:updated_time" content="2019-05-09T15:38:41.612Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="1025 Divisor Game 题解">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp; Leetcode Divisor Game这道题，理解为博弈算法，判断最后输赢的问题。">
+<meta name="twitter:title" content="计算循环小数">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;Leetcode上面的一道题(166), 计算两个数相除的结果，有循环小数的情况要1.(6)这样表示.()里面是循环节.">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -58,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>1025 Divisor Game 题解 | 流浪者</title>
+<title>计算循环小数 | 流浪者</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -211,11 +211,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我">
 </nav>
-      <div class="body-wrap"><article id="post-DivisorGame" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-FractiontoRecurringDecimal" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/04/25/1/" class="article-date">
-      <time datetime="2019-04-25T03:59:09.932Z" itemprop="datePublished">2019-04-25</time>
+      <a href="/2019/05/09/2/" class="article-date">
+      <time datetime="2019-05-09T15:38:41.612Z" itemprop="datePublished">2019-05-09</time>
 </a>
 
 
@@ -230,7 +230,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      1025 Divisor Game 题解
+      计算循环小数
     </h1>
   
 
@@ -251,22 +251,19 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&nbsp;&nbsp; <code>Leetcode</code> Divisor Game这道题，理解为博弈算法，判断最后输赢的问题。<br><a id="more"></a></p>
-<h2 id="Divisor-Game"><a href="#Divisor-Game" class="headerlink" title="Divisor Game"></a>Divisor Game</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><blockquote>
-<p>Alice and Bob take turns playing a game, with Alice starting first.<br>Initially, there is a number N on the chalkboard.  On each player’s turn, that player makes a move consisting of:</p>
-<ul>
-<li>Choosing any <code>x</code> with <code>0 &lt; x &lt; N</code> and <code>N % x == 0</code>.</li>
-<li>Replacing the number <code>N</code> on the chalkboard with <code>N - x</code>.<br>Also, if a player cannot make a move, they lose the game.<br>Return <code>True</code> if and only if Alice wins the game, assuming both players play optimally.</li>
-</ul>
+        <p>&nbsp;&nbsp;<code>Leetcode</code>上面的一道题(166), 计算两个数相除的结果，有循环小数的情况要<code>1.(6)</code>这样表示.()里面是<code>循环节</code>.<br><a id="more"></a></p>
+<h2 id="Fraction-to-Recurring-Decimal"><a href="#Fraction-to-Recurring-Decimal" class="headerlink" title="Fraction to Recurring Decimal"></a>Fraction to Recurring Decimal</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><blockquote>
+<p>Given two integers representing the numerator and denominator of a fraction, return the fraction in string format.<br>If the fractional part is repeating, enclose the repeating part in parentheses.</p>
 </blockquote>
-<h3 id="输入用例"><a href="#输入用例" class="headerlink" title="输入用例"></a>输入用例</h3><p>Example1:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: 2</span><br><span class="line">Output: true</span><br><span class="line">Explanation: Alice chooses 1, and Bob has no more moves.</span><br></pre></td></tr></table></figure></p>
-<p>Example2:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: 3</span><br><span class="line">Output: false</span><br><span class="line">Explanation: Alice chooses 1, Bob chooses 1, and Alice has no more moves.</span><br></pre></td></tr></table></figure></p>
+<h3 id="输入用例"><a href="#输入用例" class="headerlink" title="输入用例"></a>输入用例</h3><h4 id="Example1"><a href="#Example1" class="headerlink" title="Example1"></a>Example1</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: numerator = 1, denominator = 2</span><br><span class="line">Output: &quot;0.5&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="Example2"><a href="#Example2" class="headerlink" title="Example2"></a>Example2</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: numerator = 2, denominator = 1</span><br><span class="line">Output: &quot;2&quot;</span><br></pre></td></tr></table></figure>
+<h4 id="Example3"><a href="#Example3" class="headerlink" title="Example3"></a>Example3</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Input: numerator = 2, denominator = 3</span><br><span class="line">Output: &quot;0.(6)&quot;</span><br></pre></td></tr></table></figure>
 <h3 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h3><h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><blockquote>
-<p>采取打表的形式计算。<code>array[i]</code>表示当<code>N=i</code>的时候<code>先选i的人</code>是否可以胜利. 接下来就是对<code>array[i]</code>的计算<br>每次可选的数字都是<code>N</code>的因数，所以先计算<code>N</code>的因数，对每个因数进行计算，判断<code>Alice</code>是否剋胜利。只要有一个胜利即可.</p>
+<p>主要是在模拟除法，用一个数组<code>cf</code> 保存每次的<code>余数</code>, 用<code>quotient</code> 保存<code>商</code>. 其中<code>cf</code>数组是我们找到循环的重点.<br>每当向<code>cf</code>数组添加一个数字， 我们要判断， 当前数字是否为0， 是0就是可以除开.<br>不是的话，我们要确定前面是否已经出现过这个数字, 出现就代表我们进入了<code>循环节</code>, 把他输出即可.<br>其中另有一条理论<code>一个分母为N的循环小数的循环节位数最多不超过N-1位</code>, <a href="https://zh.wikipedia.org/wiki/%E5%BE%AA%E7%8E%AF%E5%B0%8F%E6%95%B0" target="_blank" rel="noopener">详情</a></p>
 </blockquote>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">factor</span><span class="params">(n <span class="keyword">int</span>)</span> []<span class="title">int</span></span> &#123;</span><br><span class="line">	res := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt; n; i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> n % i == <span class="number">0</span> &#123;</span><br><span class="line">			res = <span class="built_in">append</span>(res, i)</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">divisorGame</span><span class="params">(N <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">	<span class="keyword">if</span> N == <span class="number">1</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> N == <span class="number">2</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line">	res := <span class="built_in">make</span>([]<span class="keyword">bool</span>, N+<span class="number">1</span>)</span><br><span class="line">	res[<span class="number">1</span>] = <span class="literal">false</span></span><br><span class="line">	res[<span class="number">2</span>] = <span class="literal">true</span></span><br><span class="line">	<span class="keyword">if</span> N &lt;= <span class="number">2</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> res[N]</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">3</span>; i &lt;= N; i++ &#123;</span><br><span class="line">		flag := <span class="literal">false</span></span><br><span class="line">		fac := factor(i)</span><br><span class="line">		<span class="keyword">for</span> _, item := <span class="keyword">range</span> fac &#123;</span><br><span class="line">            <span class="comment">// alice先选的item, 所以对于剩余的i-item就是bob是否可以胜利，</span></span><br><span class="line">			flag = flag || !res[i-item]</span><br><span class="line">		&#125;</span><br><span class="line">		res[i] = flag</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res[N]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><blockquote>
-<p>其实这道题自信的分析会发现，是判断问题的奇偶性即可。可以在这道题的讨论区找到答案。</p>
+<h4 id="code"><a href="#code" class="headerlink" title="code"></a>code</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> FractiontoRecurringDecimal</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"bytes"</span></span><br><span class="line">	<span class="string">"fmt"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">fractionToDecimal</span><span class="params">(numerator <span class="keyword">int</span>, denominator <span class="keyword">int</span>)</span> <span class="title">string</span></span> &#123;</span><br><span class="line">	<span class="keyword">const</span> maxn = <span class="number">65536</span></span><br><span class="line">	<span class="keyword">var</span> flag <span class="keyword">bool</span></span><br><span class="line">	<span class="keyword">if</span> numerator * denominator &lt; <span class="number">0</span> &#123;</span><br><span class="line">		flag = <span class="literal">false</span></span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		flag = <span class="literal">true</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> numerator % denominator == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> fmt.Sprintf(<span class="string">"%d"</span>, numerator/denominator)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> numerator &lt; <span class="number">0</span> &#123;</span><br><span class="line">		numerator = - numerator</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> denominator &lt; <span class="number">0</span> &#123;</span><br><span class="line">		denominator = -denominator</span><br><span class="line">	&#125;</span><br><span class="line">	quotient := <span class="built_in">make</span>([]<span class="keyword">int</span>, maxn)</span><br><span class="line">	cf := <span class="built_in">make</span>([]<span class="keyword">int</span>, maxn)</span><br><span class="line">	cf[<span class="number">0</span>] = numerator % denominator</span><br><span class="line">	quotient[<span class="number">0</span>] = numerator / denominator</span><br><span class="line">	buf := bytes.NewBufferString(<span class="string">""</span>)</span><br><span class="line">	<span class="keyword">if</span> flag &#123;</span><br><span class="line">		buf.WriteString(fmt.Sprintf(<span class="string">"%d."</span>, quotient[<span class="number">0</span>]))</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		buf.WriteString(fmt.Sprintf(<span class="string">"-%d."</span>, quotient[<span class="number">0</span>]))</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; denominator<span class="number">-1</span>; i++ &#123;</span><br><span class="line">		tmp := (cf[i] * <span class="number">10</span>) % denominator</span><br><span class="line">		quotient[i+<span class="number">1</span>] = (cf[i] * <span class="number">10</span>) / denominator</span><br><span class="line">		<span class="keyword">if</span> tmp == <span class="number">0</span> &#123;</span><br><span class="line">			<span class="keyword">for</span> index := <span class="number">1</span>; index &lt;= i+<span class="number">1</span>; index++ &#123;</span><br><span class="line">				buf.WriteString(fmt.Sprintf(<span class="string">"%d"</span>, quotient[index]))</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">return</span> buf.String()</span><br><span class="line">		&#125;</span><br><span class="line">		cf[i+<span class="number">1</span>] = tmp</span><br><span class="line">		<span class="keyword">for</span> index := <span class="number">0</span>; index &lt;= i; index++ &#123;</span><br><span class="line">			<span class="keyword">if</span> cf[i+<span class="number">1</span>] == cf[index] &#123;</span><br><span class="line">				<span class="keyword">if</span> index != <span class="number">0</span> &#123;</span><br><span class="line">					<span class="keyword">for</span> inner := <span class="number">1</span>; inner &lt;= index; inner++ &#123;</span><br><span class="line">						buf.WriteString(fmt.Sprintf(<span class="string">"%d"</span>, quotient[inner]))</span><br><span class="line">					&#125;</span><br><span class="line">					buf.WriteString(<span class="string">"("</span>)</span><br><span class="line">					<span class="keyword">for</span> inner := index+<span class="number">1</span>; inner &lt;= i+<span class="number">1</span>; inner++ &#123;</span><br><span class="line">						buf.WriteString(fmt.Sprintf(<span class="string">"%d"</span>, quotient[inner]))</span><br><span class="line">					&#125;</span><br><span class="line">					buf.WriteString(<span class="string">")"</span>)</span><br><span class="line">				&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">					buf.WriteString(<span class="string">"("</span>)</span><br><span class="line">					<span class="keyword">for</span> inner := <span class="number">1</span>; inner &lt;= i+<span class="number">1</span>; inner++ &#123;</span><br><span class="line">						buf.WriteString(fmt.Sprintf(<span class="string">"%d"</span>, quotient[inner]))</span><br><span class="line">					&#125;</span><br><span class="line">					buf.WriteString(<span class="string">")"</span>)</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">return</span> buf.String()</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">""</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><blockquote>
+<p>主要是要清楚，如何判断循环小数的情况，其次是了解循环小数的性质.</p>
 </blockquote>
 
       
@@ -279,16 +276,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2019/04/25/2/">
-                    360企业安全笔试算法题
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2019/04/22/1/">
-                    python用tkinter实现贪吃蛇
+                <a href="/2019/05/09/1/">
+                    Leetcode 30和41题
                 </a>
             </div>
         
@@ -300,7 +291,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Divisor-Game"><span class="toc-number">1.</span> <span class="toc-text">Divisor Game</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-number">1.1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入用例"><span class="toc-number">1.2.</span> <span class="toc-text">输入用例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">1.3.</span> <span class="toc-text">解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分析"><span class="toc-number">1.3.1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码"><span class="toc-number">1.3.2.</span> <span class="toc-text">代码</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Fraction-to-Recurring-Decimal"><span class="toc-number">1.</span> <span class="toc-text">Fraction to Recurring Decimal</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-number">1.1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入用例"><span class="toc-number">1.2.</span> <span class="toc-text">输入用例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Example1"><span class="toc-number">1.2.1.</span> <span class="toc-text">Example1</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Example2"><span class="toc-number">1.2.2.</span> <span class="toc-text">Example2</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Example3"><span class="toc-number">1.2.3.</span> <span class="toc-text">Example3</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决办法"><span class="toc-number">1.3.</span> <span class="toc-text">解决办法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分析"><span class="toc-number">1.3.1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#code"><span class="toc-number">1.3.2.</span> <span class="toc-text">code</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">2.</span> <span class="toc-text">总结</span></a></li></ol>
         
     </div>
     <style>
@@ -344,15 +335,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2019/04/25/2/" title="上一篇: 360企业安全笔试算法题">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2019/04/22/1/" title="下一篇: python用tkinter实现贪吃蛇">
+            <a href="/2019/05/09/1/" title="下一篇: Leetcode 30和41题">
                 <i class="fa fa-angle-right"></i>
             </a>
         
