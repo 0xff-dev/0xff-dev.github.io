@@ -4,6 +4,29 @@
   
     
     <entry>
+      <title>使用aws做开机自启动docker容器</title>
+      <link href="/2019/09/19/1/"/>
+      <url>/2019/09/19/1/</url>
+      
+        <content type="html"><![CDATA[<p>&nbsp;&nbsp; 本篇文章主要讲如何根据aws的linux ami制作自己的ami，并且提供开机自启的docker容器<br><a id="more"></a></p><h2 id="问题描述"><a href="#问题描述" class="headerlink" title="问题描述"></a>问题描述</h2><blockquote><p>我们要做的是根据<code>amazon linux</code>的基础AMI生成实例，放入我们的镜像，提供给别人用，其他人在使用我们的AMI的时候，会自动根据我们的镜像启动容器，进而使用我们的服务。</p></blockquote><h2 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h2><blockquote><p>所有的操作都是在aws的web平台操作的</p><ol><li>首先选择<code>启动实例</code>, 选择<code>Amazon linux</code>作为我们的基础 AMI, 对于安全组，我们加上我们需要开放的端口即可。启动我们的实例，如果是第一次用帮你生成登录实例的<code>key</code>, 一定要下载，否则无法登录。</li><li>登录实例<code>ssh -i /path/to/key.pem ec2-user@ip</code> key.pem就是你下载的那个文件，默认的情况EC2的实例，登录用户就是<code>ec2-user</code>, ip可以在实例的表格中找到</li><li>安装docker<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">echo "Updating your OS to latest OS..."</span><br><span class="line">sudo yum update -y</span><br><span class="line"></span><br><span class="line">echo "Installing docker package..."</span><br><span class="line">sudo yum install -y docker</span><br><span class="line"></span><br><span class="line">echo "starting Docker service.."</span><br><span class="line">sudo service docker start</span><br><span class="line"></span><br><span class="line">echo "Adding/providing ec2-user to docker group"</span><br><span class="line">sudo usermod -a -G docker ec2-user</span><br><span class="line"></span><br><span class="line">echo "Relogin to server so that ec2-user will update group"</span><br><span class="line"></span><br><span class="line">echo "Install git package it is required in docker"</span><br><span class="line">sudo yum install -y git</span><br><span class="line"></span><br><span class="line">echo "Install all development tools in linux"</span><br><span class="line">sudo yum -y groupinstall "Development Tools"</span><br></pre></td></tr></table></figure></li></ol></blockquote><blockquote><p>安装完，设置开机自启 <code>systemctl enable docker</code></p></blockquote><ol start="4"><li>上传我们的镜像，或者在镜像仓库拉取镜像。如果是我们上传的tar.gz文件，使用 <code>docker load -i file.tar.gz</code> 或者 <code>cat file.tar.gz | docker import - name:tag</code>导入镜像，根据导出镜像的形式选择导入方式.</li><li>制作启动脚本<code>start.sh</code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta">#</span><span class="bash">chkconfig: 2345 80 90</span></span><br><span class="line"><span class="meta">#</span><span class="bash">description:auto_run</span></span><br><span class="line">sudo docker rm $(docker ps -aq)</span><br><span class="line"></span><br><span class="line">sudo docker run --restart=always --name imageName (加入你的参数) /bin/shell</span><br></pre></td></tr></table></figure></li></ol><blockquote><p>我选择在创建/重启机器的时候把现有的容器都清理掉，重新启动，但是保留数据卷。<br>第一行，告诉系统使用的shell,所以的shell脚本都是这样。<br>第 二行，chkconfig后面有三个参数2345,80和90告诉chkconfig程序，需要在rc2.d~rc5.d目录下，创建名字为 S80auto_run的文件连&gt;接，连接到/etc/rc.d/init.d目录下的的auto_run脚本。第一个字符是S，系统在启动的时候，运行脚 本auto_run，就会添加一个start参数，告诉脚本，现在是启动模式。同时在rc0.d和rc6.d目录下，创建名字为K90auto_run的 文件连接，第一个字符为K，个系统在关闭系统的时候，会运行auto_run，添加一个stop，告诉脚本，现在是关闭模式。<br>注意上面的三行是中，地二，第三行是必须的，否则在运行chkconfig –add auto_run时，会报错。</p></blockquote><ol start="6"><li>脚本放到<code>/etc/rc.d/init.d/</code>目录下，并进入该目录</li></ol><ul><li>赋予执行权限<code>sudo chmod +x start.sh</code>,</li><li><code>chkconfig --add start.sh</code></li><li><code>chkconfig start.sh on</code></li></ul><ol start="7"><li><p>执行完第五步，就会开机自启了。接下来就是制作AMI</p><blockquote><p>首先把实例中创建的<code>数据卷</code>，<code>容器删除</code>，然后停止我们的实例，回到aws的web平台，选择创建映像。 就会得到我们的AMI映像了。可以按照aws的要求发布或者共享给别人。</p></blockquote></li><li><p>注意，实例停止，在启动她的对外ip会发生改变，所以想要ip不变，可以创建弹性ip。这种方法起一次启动AMI需要重启一下，才能正常启动我们的容器.</p></li></ol><h2 id="为容器梦想，奋斗"><a href="#为容器梦想，奋斗" class="headerlink" title="为容器梦想，奋斗!!!"></a>为容器梦想，奋斗!!!</h2>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> aws </tag>
+            
+            <tag> docker </tag>
+            
+            <tag> shell </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>使用vue写分页组件</title>
       <link href="/2019/09/11/1/"/>
       <url>/2019/09/11/1/</url>
@@ -17,25 +40,6 @@
             <tag> css </tag>
             
             <tag> vue </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
-      <title></title>
-      <link href="/2019/07/29/1/"/>
-      <url>/2019/07/29/1/</url>
-      
-        <content type="html"><![CDATA[<p>&nbsp;&nbsp; 这篇文章主要是要让自己对时间有个完整的认识。<br><a id="more"></a></p>]]></content>
-      
-      
-      
-        <tags>
-            
-            <tag> go </tag>
             
         </tags>
       
