@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>Vault 配置kms</title>
+      <link href="/2019/12/30/1/"/>
+      <url>/2019/12/30/1/</url>
+      
+        <content type="html"><![CDATA[<p>目前的操作步骤是<br>前提是集群已经存在</p><ol><li>下载vault</li><li>配置本地的VAULT_ADDR环境变量</li><li>启动vault  <code>nohub vault server -dev &amp;</code></li><li>配置plugin的参数和socket</li><li>配置apiserver启动的参数encrypt-, 挂载socket目录，以及那个配置文件的目录</li><li>下载vault的插件，编译，启动，指定需要的文件目录</li><li>重启apiserver，</li></ol><p>存在的问题是1. apiserver启动的时候会调用Version函数，总感觉是那个钥匙环配错了，导致没有加密？？？？？？<br>有待考证。</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> k8s </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Best Time to Buy and Sell Stock III</title>
       <link href="/2019/11/16/1/"/>
       <url>/2019/11/16/1/</url>

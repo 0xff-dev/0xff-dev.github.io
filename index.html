@@ -216,6 +216,79 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-vault" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2019/12/30/1/" class="article-date">
+      <time datetime="2019-12-30T10:41:54.284Z" itemprop="datePublished">2019-12-30</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/12/30/1/">Vault 配置kms</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>目前的操作步骤是<br>前提是集群已经存在</p>
+<ol>
+<li>下载vault</li>
+<li>配置本地的VAULT_ADDR环境变量</li>
+<li>启动vault  <code>nohub vault server -dev &amp;</code></li>
+<li>配置plugin的参数和socket</li>
+<li>配置apiserver启动的参数encrypt-, 挂载socket目录，以及那个配置文件的目录</li>
+<li>下载vault的插件，编译，启动，指定需要的文件目录</li>
+<li>重启apiserver，</li>
+</ol>
+<p>存在的问题是1. apiserver启动的时候会调用Version函数，总感觉是那个钥匙环配错了，导致没有加密？？？？？？<br>有待考证。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+
+
+
+  
     <article id="post-best-time-buy-sell-stock-iii" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -819,76 +892,9 @@
 
 
   
-    <article id="post-FractiontoRecurringDecimal" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2019/05/09/2/" class="article-date">
-      <time datetime="2019-05-09T15:38:41.612Z" itemprop="datePublished">2019-05-09</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/05/09/2/">计算循环小数</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>&nbsp;&nbsp;<code>Leetcode</code>上面的一道题(166), 计算两个数相除的结果，有循环小数的情况要<code>1.(6)</code>这样表示.()里面是<code>循环节</code>.<br>
-          
-      
-    </p></div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/">leetcode</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2019/05/09/2/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </div>
@@ -897,7 +903,7 @@
         <div id="footer-info">
             <div class="footer-left">
                 <i class="fa fa-copyright"></i> 
-                2019 stevenshuang
+                2019-2020 stevenshuang
             </div>
             <div class="footer-right">
                 <i class="fa fa-heart animated infinite pulse"></i>

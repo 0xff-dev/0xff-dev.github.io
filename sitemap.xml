@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://stevenshuang.github.io/about/index.html</loc>
+    
+    <lastmod>2020-01-12T04:05:37.986Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://stevenshuang.github.io/2019/12/30/1/</loc>
+    
+    <lastmod>2019-12-30T10:41:54.284Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://stevenshuang.github.io/2019/11/16/1/</loc>
     
     <lastmod>2019-11-16T09:04:19.863Z</lastmod>
@@ -47,13 +61,6 @@
     <loc>https://stevenshuang.github.io/2019/09/11/1/</loc>
     
     <lastmod>2019-09-11T14:39:58.865Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://stevenshuang.github.io/about/index.html</loc>
-    
-    <lastmod>2019-07-28T04:28:49.899Z</lastmod>
     
   </url>
   
