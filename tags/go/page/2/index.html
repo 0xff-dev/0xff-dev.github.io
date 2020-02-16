@@ -15,18 +15,16 @@
 
 
 
-<meta name="description" content="目前的操作步骤是前提是集群已经存在  下载vault 配置本地的VAULT_ADDR环境变量 启动vault  nohub vault server -dev &amp;amp; 配置plugin的参数和socket 配置apiserver启动的参数encrypt-, 挂载socket目录，以及那个配置文件的目录 下载vault的插件，编译，启动，指定需要的文件目录 重启apiserver，  存在的问题">
-<meta name="keywords" content="k8s">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Vault 配置kms">
-<meta property="og:url" content="https://stevenshuang.github.io/2019/12/30/1/index.html">
+<meta name="description" content="见贤思齐">
+<meta property="og:type" content="website">
+<meta property="og:title" content="流浪者">
+<meta property="og:url" content="https://stevenshuang.github.io/tags/go/page/2/index.html">
 <meta property="og:site_name" content="流浪者">
-<meta property="og:description" content="目前的操作步骤是前提是集群已经存在  下载vault 配置本地的VAULT_ADDR环境变量 启动vault  nohub vault server -dev &amp;amp; 配置plugin的参数和socket 配置apiserver启动的参数encrypt-, 挂载socket目录，以及那个配置文件的目录 下载vault的插件，编译，启动，指定需要的文件目录 重启apiserver，  存在的问题">
+<meta property="og:description" content="见贤思齐">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-12-30T10:41:54.284Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Vault 配置kms">
-<meta name="twitter:description" content="目前的操作步骤是前提是集群已经存在  下载vault 配置本地的VAULT_ADDR环境变量 启动vault  nohub vault server -dev &amp;amp; 配置plugin的参数和socket 配置apiserver启动的参数encrypt-, 挂载socket目录，以及那个配置文件的目录 下载vault的插件，编译，启动，指定需要的文件目录 重启apiserver，  存在的问题">
+<meta name="twitter:title" content="流浪者">
+<meta name="twitter:description" content="见贤思齐">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -58,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Vault 配置kms | 流浪者</title>
+<title>Tag: go | 流浪者</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -68,9 +66,9 @@
         fancybox: true,
         animate: true,
         isHome: false,
-        isPost: true,
+        isPost: false,
         isArchive: false,
-        isTag: false,
+        isTag: true,
         isCategory: false,
         fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
         scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
@@ -211,169 +209,59 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我">
 </nav>
-      <div class="body-wrap"><article id="post-vault" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap">
   
-    <div class="article-meta">
-      <a href="/2019/12/30/1/" class="article-date">
-      <time datetime="2019-12-30T10:41:54.284Z" itemprop="datePublished">2019-12-30</time>
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2019" class="archive-year">2019</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+          <div class="article-meta">
+              <a href="/2019/04/12/2/" class="archive-article-date">
+      <time datetime="2019-04-12T12:58:06.809Z" itemprop="datePublished">04-12</time>
 </a>
 
 
-    </div>
+        </div>
+         
   
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Vault 配置kms
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2019/04/12/2/">LRUCache(最近最久未使用算法)题解</a>
     </h1>
   
 
-      </header>
-      
-      <div class="article-info article-info-post">
-        
-
-        
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/k8s/">k8s</a></li></ul>
-    </div>
-
-        <div class="clearfix"></div>
-      </div>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
+        <div class="article-info info-on-archive">
           
-        <p>目前的操作步骤是<br>前提是集群已经存在</p>
-<ol>
-<li>下载vault</li>
-<li>配置本地的VAULT_ADDR环境变量</li>
-<li>启动vault  <code>nohub vault server -dev &amp;</code></li>
-<li>配置plugin的参数和socket</li>
-<li>配置apiserver启动的参数encrypt-, 挂载socket目录，以及那个配置文件的目录</li>
-<li>下载vault的插件，编译，启动，指定需要的文件目录</li>
-<li>重启apiserver，</li>
-</ol>
-<p>存在的问题是1. apiserver启动的时候会调用Version函数，总感觉是那个钥匙环配错了，导致没有加密？？？？？？<br>有待考证。</p>
 
-      
+          
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/">leetcode</a></li></ul>
     </div>
-    
+
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
-  
-    
-
-
-    <nav id="article-nav">
-        
-        
-            <div id="article-nav-older" class="article-nav-title">
-                <a href="/2019/11/16/1/">
-                    Best Time to Buy and Sell Stock III
-                </a>
-            </div>
-        
-    </nav>
-
-  
 </article>
-
-    <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
-        
-            
-        
-    </div>
-    <style>
-        .left-col .switch-btn,
-        .left-col .switch-area {
-            display: none;
-        }
-        .toc-level-4 i,
-        .toc-level-4 ol {
-            display: none !important;
-        }
-    </style>
-
-    <input type="button" id="tocButton" value="隐藏目录" title="点击按钮隐藏或者显示文章目录">
-
-    <script>
-        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
-    </script>
-
-
-
-    
-<div class="share">
-    
-
-    
-        <div class="addthis_sharing_toolbox"></div>
-    
-</div>
-
-
-
-
-
-
-
-    
-
-
-
-
-    <div class="scroll" id="post-nav-button">
-        
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
-        
-
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
-
-        
-            <a href="/2019/11/16/1/" title="下一篇: Best Time to Buy and Sell Stock III">
-                <i class="fa fa-angle-right"></i>
-            </a>
-        
-    </div>
-
-    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/12/30/1/">Vault 配置kms</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/16/1/">Best Time to Buy and Sell Stock III</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/12/1/">联邦集群安装</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/03/1/">利用kubeadm搭建k8s集群</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/28/1/">学习使用ip命令</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/22/1/">仿写QQ说说空间评论</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/19/1/">使用aws做开机自启动docker容器</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/09/11/1/">使用vue写分页组件</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/07/14/1/">149 Max Points on a line 题解</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/18/1/">毕设期间前端所学技术总结</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/2/">计算循环小数</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/09/1/">Leetcode 30和41题</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/05/03/1/">Android Loading对话框实现</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/25/2/">360企业安全笔试算法题</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/25/1/">1025 Divisor Game 题解</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/22/1/">python用tkinter实现贪吃蛇</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/19/1/">使用golang实现简单验证码图片</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/17/1/">mac下如何使用百度云的加速下载</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/15/1/">字符串修改</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/12/2/">LRUCache(最近最久未使用算法)题解</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/04/12/1/">Hello World</a></li></ul>
-
-
-
-
   
-  <!-- Gitment评论插件通用代码 -->
-<div id="git"></div>
-<link rel="stylesheet" href="https://jjeejj.github.io/css/gitment.css">
-<script src="https://jjeejj.github.io/js/gitment.js"></script>
-<script>
-var gitment = new Gitment({
-  owner: "stevenshuang",
-  repo: "stevenshuang.github.io",
-  oauth: {
-    client_id: "4d09482d6653370cea29",
-    client_secret:"eef93d691899860d60f28100468f976cd04326b1",
-  },
-})
-gitment.render('git')
-</script>
-<!-- Gitment代码结束 -->
-
+  
+    </div></section>
   
 
-
-
-    <script>
-        
-    </script>
+    
+    <nav id="page-nav">
+      <a class="extend prev" rel="prev" href="/tags/go/">&laquo; Prev</a><a class="page-number" href="/tags/go/">1</a><span class="page-number current">2</span>
+    </nav>
+  
 
 </div>
       <footer id="footer">
