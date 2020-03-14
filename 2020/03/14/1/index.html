@@ -15,20 +15,18 @@
 
 
 
-<meta name="description" content="&amp;nbsp;&amp;nbsp;在之前学习python的时候看到廖雪峰python教程, 完成用python画的验证码。今天用golang重新实现">
-<meta name="keywords" content="go">
+<meta name="description" content="&amp;nbsp;&amp;nbsp; 关于LFU Cache 算法的实现">
+<meta name="keywords" content="go,leetcode">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用golang实现简单验证码图片">
-<meta property="og:url" content="https://stevenshuang.github.io/2019/04/19/1/index.html">
+<meta property="og:title" content="LFU Cache算法实现">
+<meta property="og:url" content="https://stevenshuang.github.io/2020/03/14/1/index.html">
 <meta property="og:site_name" content="流浪者">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;在之前学习python的时候看到廖雪峰python教程, 完成用python画的验证码。今天用golang重新实现">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp; 关于LFU Cache 算法的实现">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://stevenshuang.github.io/images/res.jpg">
-<meta property="og:updated_time" content="2019-04-19T14:12:19.174Z">
+<meta property="og:updated_time" content="2020-03-14T15:55:15.809Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用golang实现简单验证码图片">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;在之前学习python的时候看到廖雪峰python教程, 完成用python画的验证码。今天用golang重新实现">
-<meta name="twitter:image" content="https://stevenshuang.github.io/images/res.jpg">
+<meta name="twitter:title" content="LFU Cache算法实现">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp; 关于LFU Cache 算法的实现">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -60,7 +58,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>使用golang实现简单验证码图片 | 流浪者</title>
+<title>LFU Cache算法实现 | 流浪者</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -213,11 +211,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我">
 </nav>
-      <div class="body-wrap"><article id="post-golang-captcha" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-lfu" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/04/19/1/" class="article-date">
-      <time datetime="2019-04-19T14:12:19.174Z" itemprop="datePublished">2019-04-19</time>
+      <a href="/2020/03/14/1/" class="article-date">
+      <time datetime="2020-03-14T15:23:52.981Z" itemprop="datePublished">2020-03-14</time>
 </a>
 
 
@@ -232,7 +230,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      使用golang实现简单验证码图片
+      LFU Cache算法实现
     </h1>
   
 
@@ -243,7 +241,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/">leetcode</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -253,12 +251,20 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&nbsp;&nbsp;在之前学习<code>python</code>的时候看到<a href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" target="_blank" rel="noopener">廖雪峰python教程</a>, 完成用python画的验证码。今天用<code>golang</code>重新实现<br><a id="more"></a></p>
-<h2 id="Golang实现验证码图片"><a href="#Golang实现验证码图片" class="headerlink" title="Golang实现验证码图片"></a>Golang实现验证码图片</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><blockquote>
-<p>实现的过程我们主要使用的是golang的<code>image</code>, <code>color</code>, <code>jpeg</code>库，在图片中添加文字主要使用的库包括<br><code>github.com/golang/freetype/truetype</code>, <code>golang.org/x/image/font</code>, <code>golang.org/x/image/math/fixed</code><br>后面两个库需要<code>FQ</code></p>
+        <p>&nbsp;&nbsp; 关于<code>LFU Cache</code> 算法的实现<br><a id="more"></a></p>
+<h2 id="LFU-Cache算法介绍"><a href="#LFU-Cache算法介绍" class="headerlink" title="LFU Cache算法介绍"></a>LFU Cache算法介绍</h2><blockquote>
+<p>Least Frequently Used (LFU) is a type of cache algorithm used to manage memory within a computer. The standard characteristics of this method involve the system keeping track of the number of times a block is referenced in memory. When the cache is full and requires more room the system will purge the item with the lowest reference frequency.<br>就是当给定的内存不够的情况，需要替换掉使用次数最少的数据。这个算法应该与<code>LRU Cache</code>配合使用，当使用频率相同的情况下，更换最近最久未使用的数据。 链接<a href="https://leetcode.com/problems/lfu-cache/" target="_blank" rel="noopener">leetcode题目</a></p>
 </blockquote>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">"image"</span></span><br><span class="line">	<span class="string">"image/color"</span></span><br><span class="line">	<span class="string">"image/jpeg"</span></span><br><span class="line">	<span class="string">"io/ioutil"</span></span><br><span class="line">	<span class="string">"log"</span></span><br><span class="line">	<span class="string">"math/rand"</span></span><br><span class="line">	<span class="string">"os"</span></span><br><span class="line">	<span class="string">"time"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"github.com/golang/freetype/truetype"</span></span><br><span class="line"></span><br><span class="line">	<span class="string">"golang.org/x/image/font"</span></span><br><span class="line">	<span class="string">"golang.org/x/image/math/fixed"</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> (</span><br><span class="line">	char   = <span class="string">"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"</span></span><br><span class="line">	width  = <span class="number">200</span></span><br><span class="line">	height = <span class="number">100</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">randColor</span><span class="params">()</span> <span class="title">color</span>.<span class="title">RGBA</span></span> &#123;</span><br><span class="line">	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))</span><br><span class="line">	<span class="keyword">return</span> color.RGBA&#123;<span class="keyword">uint8</span>(rnd.Intn(<span class="number">256</span>)), <span class="keyword">uint8</span>(rnd.Intn(<span class="number">256</span>)),</span><br><span class="line">		<span class="keyword">uint8</span>(rnd.Intn(<span class="number">256</span>)), <span class="keyword">uint8</span>(rnd.Intn(<span class="number">256</span>))&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">randChar</span><span class="params">()</span> <span class="title">byte</span></span> &#123;</span><br><span class="line">	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))</span><br><span class="line">	<span class="keyword">return</span> char[rnd.Intn(<span class="number">52</span>)]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// GenerateImg 生成验证码</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GenerateImg</span><span class="params">()</span></span> &#123;</span><br><span class="line">	upLeft, lowRight := image.Point&#123;<span class="number">0</span>, <span class="number">0</span>&#125;, image.Point&#123;width, height&#125;</span><br><span class="line">	img := image.NewRGBA(image.Rectangle&#123;upLeft, lowRight&#125;)</span><br><span class="line">	<span class="keyword">for</span> x := <span class="number">0</span>; x &lt; width; x++ &#123;</span><br><span class="line">		<span class="keyword">for</span> y := <span class="number">0</span>; y &lt; height; y++ &#123;</span><br><span class="line">			img.Set(x, y, randColor())</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 字体的路径</span></span><br><span class="line">	fontFile, err := os.Open(<span class="string">"./Krungthep.ttf"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">"Open font file error."</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">defer</span> fontFile.Close()</span><br><span class="line">	fontByte, err := ioutil.ReadAll(fontFile)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		log.Fatal(<span class="string">"Read font file error"</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	ft, err := truetype.Parse(fontByte)</span><br><span class="line">	d := &amp;font.Drawer&#123;</span><br><span class="line">		Dst: img,</span><br><span class="line">		Src: image.Black,</span><br><span class="line">		Face: truetype.NewFace(ft, &amp;truetype.Options&#123;</span><br><span class="line">			Size:    <span class="number">22</span>,</span><br><span class="line">			DPI:     <span class="number">100</span>,</span><br><span class="line">			Hinting: font.HintingNone,</span><br><span class="line">		&#125;),</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> x := <span class="number">0</span>; x &lt; width; x += <span class="number">50</span> &#123;</span><br><span class="line">		d.Dot = fixed.P(x+<span class="number">15</span>, height/<span class="number">2</span>+<span class="number">10</span>)</span><br><span class="line">		d.DrawString(<span class="keyword">string</span>(randChar()))</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> res, err := os.Create(<span class="string">"res.jpg"</span>); err == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">defer</span> res.Close()</span><br><span class="line">		err = jpeg.Encode(res, img, &amp;jpeg.Options&#123;<span class="number">90</span>&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	GenerateImg()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="图片"><a href="#图片" class="headerlink" title="图片"></a>图片</h3><p><img src="/images/res.jpg" alt="res"></p>
+<h3 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h3><blockquote>
+<p>对于<code>LFU</code>算法的实现，我在这里取巧了，直接利用<code>time</code>模块标记每条数据的插入时间，算是实现了最近最久未使用。得到每一个数据项结构， <code>LFUCache</code>结构如下<br><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> cacheType <span class="keyword">struct</span> &#123;</span><br><span class="line">    Order     time.Time</span><br><span class="line">    AccessCnt <span class="keyword">int</span></span><br><span class="line">    Key       <span class="keyword">int</span></span><br><span class="line">    Val       <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> caches []*cacheType</span><br><span class="line"><span class="keyword">type</span> LFUCache <span class="keyword">struct</span> &#123;</span><br><span class="line">    Size    <span class="keyword">int</span></span><br><span class="line">    Index   <span class="keyword">int</span></span><br><span class="line">    Data    caches</span><br><span class="line">    DataMap <span class="keyword">map</span>[<span class="keyword">int</span>]*cacheType</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+</blockquote>
+<blockquote>
+<p> 定义<code>caches</code>结构是为了对数据进行排序，其中Data字段就是我们的每一个数据， DataMap就是为了实现O(1)访问实现做的一个变量.<br>在进行数据插入的时候，如果当前的数据还没有满，直接插入即可，当数据满了的情况，就需要将访问次数最小，或者相同访问次数的<code>最近最久未使用</code>的数据替换. 在这里我的实现方式即使直接根据访问次数和创建时间进行排序。将目标数据放到最后一个位置，然后将其替换。</p>
+</blockquote>
+<h3 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h3><figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> cacheType <span class="keyword">struct</span> &#123;</span><br><span class="line">    Order     time.Time</span><br><span class="line">    AccessCnt <span class="keyword">int</span></span><br><span class="line">    Key       <span class="keyword">int</span></span><br><span class="line">    Val       <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> caches []*cacheType</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(self caches)</span> <span class="title">Len</span><span class="params">()</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">len</span>(self)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(self caches)</span> <span class="title">Less</span><span class="params">(i, j <span class="keyword">int</span>)</span> <span class="title">bool</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> self[i].AccessCnt == self[j].AccessCnt &#123;</span><br><span class="line">        <span class="keyword">return</span> self[i].Order.After(self[j].Order)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> self[i].AccessCnt &gt; self[j].AccessCnt</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(self caches)</span> <span class="title">Swap</span><span class="params">(i, j <span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">    self[i], self[j] = self[j], self[i]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> LFUCache <span class="keyword">struct</span> &#123;</span><br><span class="line">    Size    <span class="keyword">int</span></span><br><span class="line">    Index   <span class="keyword">int</span></span><br><span class="line">    Data    caches</span><br><span class="line">    DataMap <span class="keyword">map</span>[<span class="keyword">int</span>]*cacheType</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Constructor</span><span class="params">(capacity <span class="keyword">int</span>)</span> <span class="title">LFUCache</span></span> &#123;</span><br><span class="line">    <span class="keyword">return</span> LFUCache&#123;</span><br><span class="line">        Size: capacity,</span><br><span class="line">        Index: <span class="number">0</span>,</span><br><span class="line">        Data: <span class="built_in">make</span>([]*cacheType, capacity),</span><br><span class="line">        DataMap: <span class="keyword">map</span>[<span class="keyword">int</span>]*cacheType&#123;&#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *LFUCache)</span> <span class="title">Get</span><span class="params">(key <span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">    <span class="keyword">if</span> this.Size == <span class="number">0</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> val, ok := this.DataMap[key]; ok &#123;</span><br><span class="line">        this.DataMap[key].Order = time.Now()</span><br><span class="line">        this.DataMap[key].AccessCnt++</span><br><span class="line">        <span class="keyword">return</span> val.Val</span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(this *LFUCache)</span> <span class="title">Put</span><span class="params">(key <span class="keyword">int</span>, value <span class="keyword">int</span>)</span></span>  &#123;</span><br><span class="line">    <span class="keyword">if</span> this.Size == <span class="number">0</span> &#123; <span class="keyword">return</span> &#125;</span><br><span class="line">    <span class="keyword">if</span> _, ok := this.DataMap[key]; ok &#123;</span><br><span class="line">        this.DataMap[key].Val = value</span><br><span class="line">        this.DataMap[key].AccessCnt++</span><br><span class="line">        this.DataMap[key].Order = time.Now()</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    newCacheData := &amp;cacheType&#123;</span><br><span class="line">        Order: time.Now(),</span><br><span class="line">        AccessCnt: <span class="number">0</span>,</span><br><span class="line">        Key: key,</span><br><span class="line">        Val: value,</span><br><span class="line">    &#125;</span><br><span class="line">    this.DataMap[key] = newCacheData</span><br><span class="line">    <span class="keyword">if</span> this.Index &lt; this.Size &#123;</span><br><span class="line">        this.Data[this.Index] = newCacheData</span><br><span class="line">        this.Index++</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        sort.Sort(caches(this.Data))</span><br><span class="line">        <span class="built_in">delete</span>(this.DataMap, this.Data[this.Index<span class="number">-1</span>].Key)</span><br><span class="line">        this.Data[this.Index<span class="number">-1</span>] = newCacheData</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><blockquote>
+<p> 这道问题不该这么实现，这样实现是在用时间换取空间，不是很好的解决办法。具体的实现方式自己还的再研究研究。</p>
+</blockquote>
 
       
     </div>
@@ -270,16 +276,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2019/04/22/1/">
-                    python用tkinter实现贪吃蛇
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2019/04/17/1/">
-                    mac下如何使用百度云的加速下载
+                <a href="/2020/02/16/1/">
+                    leetcode三道题解题记录
                 </a>
             </div>
         
@@ -291,7 +291,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Golang实现验证码图片"><span class="toc-number">1.</span> <span class="toc-text">Golang实现验证码图片</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#概述"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码"><span class="toc-number">1.2.</span> <span class="toc-text">代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#图片"><span class="toc-number">1.3.</span> <span class="toc-text">图片</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#LFU-Cache算法介绍"><span class="toc-number">1.</span> <span class="toc-text">LFU Cache算法介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#实现方法"><span class="toc-number">1.1.</span> <span class="toc-text">实现方法</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#代码实现"><span class="toc-number">1.2.</span> <span class="toc-text">代码实现</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#心得"><span class="toc-number">2.</span> <span class="toc-text">心得</span></a></li></ol>
         
     </div>
     <style>
@@ -335,15 +335,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2019/04/22/1/" title="上一篇: python用tkinter实现贪吃蛇">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2019/04/17/1/" title="下一篇: mac下如何使用百度云的加速下载">
+            <a href="/2020/02/16/1/" title="下一篇: leetcode三道题解题记录">
                 <i class="fa fa-angle-right"></i>
             </a>
         
