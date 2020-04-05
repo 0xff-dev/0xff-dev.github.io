@@ -15,18 +15,21 @@
 
 
 
-<meta name="description" content="&amp;nbsp;&amp;nbsp;Leetcode 编辑字符串使用最少的步数让两个字符串相同. 自己之前遇到过没有做，今天做了总结一下.">
-<meta name="keywords" content="go,leetcode">
+<meta name="description" content="&amp;nbsp;&amp;nbsp; 利用docker搭建一个一primary两个secondary的mongodb副本集">
+<meta name="keywords" content="docker,mongo,docker-compose">
 <meta property="og:type" content="article">
-<meta property="og:title" content="字符串修改">
-<meta property="og:url" content="https://stevenshuang.github.io/2019/04/15/1/index.html">
+<meta property="og:title" content="搭建mongodb副本集">
+<meta property="og:url" content="https://stevenshuang.github.io/2020/04/05/1/index.html">
 <meta property="og:site_name" content="流浪者">
-<meta property="og:description" content="&amp;nbsp;&amp;nbsp;Leetcode 编辑字符串使用最少的步数让两个字符串相同. 自己之前遇到过没有做，今天做了总结一下.">
+<meta property="og:description" content="&amp;nbsp;&amp;nbsp; 利用docker搭建一个一primary两个secondary的mongodb副本集">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-15T13:11:18.333Z">
+<meta property="og:image" content="https://stevenshuang.github.io/images/replica-set-read-write-operations-primary.bakedsvg.svg">
+<meta property="og:image" content="https://stevenshuang.github.io/images/mongo-connection.png">
+<meta property="og:updated_time" content="2020-04-05T09:16:04.475Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="字符串修改">
-<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp;Leetcode 编辑字符串使用最少的步数让两个字符串相同. 自己之前遇到过没有做，今天做了总结一下.">
+<meta name="twitter:title" content="搭建mongodb副本集">
+<meta name="twitter:description" content="&amp;nbsp;&amp;nbsp; 利用docker搭建一个一primary两个secondary的mongodb副本集">
+<meta name="twitter:image" content="https://stevenshuang.github.io/images/replica-set-read-write-operations-primary.bakedsvg.svg">
 
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
@@ -58,7 +61,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>字符串修改 | 流浪者</title>
+<title>搭建mongodb副本集 | 流浪者</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -211,11 +214,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我">
 </nav>
-      <div class="body-wrap"><article id="post-edit-distance" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-mongodbReplSet" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2019/04/15/1/" class="article-date">
-      <time datetime="2019-04-15T13:11:18.333Z" itemprop="datePublished">2019-04-15</time>
+      <a href="/2020/04/05/1/" class="article-date">
+      <time datetime="2020-04-05T06:32:14.061Z" itemprop="datePublished">2020-04-05</time>
 </a>
 
 
@@ -230,7 +233,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      字符串修改
+      搭建mongodb副本集
     </h1>
   
 
@@ -241,7 +244,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/go/">go</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/leetcode/">leetcode</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker/">docker</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/docker-compose/">docker-compose</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mongo/">mongo</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -251,23 +254,100 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>&nbsp;&nbsp;<code>Leetcode</code> 编辑字符串使用最少的步数让两个字符串相同. 自己之前遇到过没有做，今天做了总结一下.<br><a id="more"></a></p>
-<h2 id="Edit-Distance"><a href="#Edit-Distance" class="headerlink" title="Edit Distance"></a>Edit Distance</h2><h3 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h3><blockquote>
-<p>Given two words <code>word1</code> and <code>word2</code>, find the minimum number of operations required to convert <code>word1</code> to <code>word2</code>.<br>You have the following 3 operations permitted on a word:</p>
-<ol>
-<li>Insert a character</li>
-<li>Delete a character</li>
-<li>Replace a character</li>
+        <p>&nbsp;&nbsp; 利用docker搭建一个一primary两个secondary的mongodb副本集<br><a id="more"></a></p>
+<h2 id="依赖"><a href="#依赖" class="headerlink" title="依赖"></a>依赖</h2><ul>
+<li>docker</li>
+<li>docker-compose</li>
+</ul>
+<h2 id="副本集介绍"><a href="#副本集介绍" class="headerlink" title="副本集介绍"></a>副本集介绍</h2><blockquote>
+<p>MongoDB中的副本集是一组mongod的进程，提供冗余和高可用性，副本集的成员：</p>
+<ul>
+<li>主：<br>接受所有的写操作</li>
+<li>次级：<br>辅助节点从主节点复制操作以维护相同的数据集。辅助节点可能具有特殊的用途，profiles的其他配置。辅助可以是no-boting或者优先级为0<br>主服务器是副本集中唯一接受写入操作的成员，MongoDb对主应用写操作，然后在主要的<code>OPLOG</code>记录操作，次级成员根据复制此log并将操作应用与数据集<br><img src="/images/replica-set-read-write-operations-primary.bakedsvg.svg" alt="replica-set-read-write-operations-primary.bakedsvg.svg"><br>如果主节点不可使用，成员会重新选举新的primary。保证了集群的高可用性。</li>
+</ul>
+</blockquote>
+<h2 id="副本集Oplog"><a href="#副本集Oplog" class="headerlink" title="副本集Oplog"></a>副本集Oplog</h2><blockquote>
+<p>Oplog是一额特殊的上限集合，它保存了修改存储在数据库中的数据的所有操作的滚动记录。MongoDB在在primary进行写操作，在primary的oplog记录操作，所有的次级成员会<code>异步</code>复制这个oplog，并且应用在自己的数据集中。为了便于复制，所有的副本成员都会向其他的成员发送心跳<code>ping</code>，任何次级成员都可以import来自任何其他成员的oplog。<br>oplog的每一个操作都是幂等的，对目标数据集应用一次或者多次，oplog产生的结果都是一样的。</p>
+</blockquote>
+<h4 id="Oplog大小"><a href="#Oplog大小" class="headerlink" title="Oplog大小"></a>Oplog大小</h4><ul>
+<li>Unix或者windows系统</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">存储引擎</th>
+<th style="text-align:center">默认的Oplog大小</th>
+<th style="text-align:center">下限</th>
+<th style="text-align:center">上限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">in-memory</td>
+<td style="text-align:center">物理内存的5%</td>
+<td style="text-align:center">50M</td>
+<td style="text-align:center">50G</td>
+</tr>
+<tr>
+<td style="text-align:center">WiredTiger</td>
+<td style="text-align:center">5%的可用磁盘空间</td>
+<td style="text-align:center">990M</td>
+<td style="text-align:center">50G</td>
+</tr>
+<tr>
+<td style="text-align:center">MMAPV1</td>
+<td style="text-align:center">5%的可用磁盘空间</td>
+<td style="text-align:center">990M</td>
+<td style="text-align:center">50G</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>64-bit的macos系统</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">存储引擎</th>
+<th style="text-align:center">默认oplog大小</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">in-memoery</td>
+<td style="text-align:center">192M的物理内存</td>
+</tr>
+<tr>
+<td style="text-align:center">WiredTiger</td>
+<td style="text-align:center">192M的可用磁盘空间</td>
+</tr>
+<tr>
+<td style="text-align:center">MMAPV1</td>
+<td style="text-align:center">192M可用磁盘空间</td>
+</tr>
+</tbody>
+</table>
+<h2 id="创建副本集"><a href="#创建副本集" class="headerlink" title="创建副本集"></a>创建副本集</h2><ol>
+<li><p>docker-compose.yaml</p>
+<blockquote>
+<p>注意monog的启动参数</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">mongo1:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">mongo:3.6</span></span><br><span class="line"><span class="attr">  container_name:</span> <span class="string">mongo1</span></span><br><span class="line"><span class="attr">  net:</span> <span class="string">"mongo-cluster"</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">"27017:27017"</span></span><br><span class="line"><span class="attr">  volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/path/to/mongod.conf:/opt/mongod.conf</span></span><br><span class="line"><span class="attr">  command:</span> <span class="string">mongod</span> <span class="bullet">--replSet</span> <span class="string">mset</span> <span class="bullet">--config</span> <span class="string">/opt/mongod.conf</span></span><br><span class="line"><span class="attr">mongo2:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">mongo:3.6</span></span><br><span class="line"><span class="attr">  container_name:</span> <span class="string">mongo2</span></span><br><span class="line"><span class="attr">  net:</span> <span class="string">"mongo-cluster"</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">"27016:27017"</span></span><br><span class="line"><span class="attr">  volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/path/to/mongod.conf:/opt/mongod.conf</span></span><br><span class="line"><span class="attr">  command:</span> <span class="string">mongod</span> <span class="bullet">--replSet</span> <span class="string">mset</span> <span class="bullet">--config</span> <span class="string">/opt/mongod.conf</span></span><br><span class="line"><span class="attr">mongo3:</span></span><br><span class="line"><span class="attr">  image:</span> <span class="attr">mongo:3.6</span></span><br><span class="line"><span class="attr">  container_name:</span> <span class="string">mongo3</span></span><br><span class="line"><span class="attr">  net:</span> <span class="string">"mongo-cluster"</span></span><br><span class="line"><span class="attr">  ports:</span></span><br><span class="line"><span class="bullet">    -</span> <span class="string">"27015:27017"</span></span><br><span class="line"><span class="attr">  volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/path/to/mongod.conf:/opt/mongod.conf</span></span><br><span class="line"><span class="attr">  command:</span> <span class="string">mongod</span> <span class="bullet">--replSet</span> <span class="string">mset</span> <span class="bullet">--config</span> <span class="string">/opt/mongod.conf</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+</li>
+<li><p>创建docker的网络</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker network create monog-cluster</span><br><span class="line"><span class="comment"># 如果发生错误, 可以尝试下面的命令修复, 执行后，重新创建network</span></span><br><span class="line">sudo ip link delete docker0</span><br><span class="line">sudo systemctl restart docker</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动三个容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-compose -f docker-compose.yaml up -d</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置mongo副本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it mongo1 mongo <span class="comment"># 进入容器的命令行</span></span><br><span class="line">config=&#123;<span class="string">"_id"</span>:<span class="string">"mset"</span>,<span class="string">"members"</span>:[&#123;<span class="string">"_id"</span>:0,<span class="string">"host"</span>:<span class="string">"mongo1:27017"</span>&#125;,&#123;<span class="string">"_id"</span>:1,<span class="string">"host"</span>:<span class="string">"mongo2:27017"</span>&#125;,&#123;<span class="string">"_id"</span>:2,<span class="string">"host"</span>:<span class="string">"mongo3:27017"</span>&#125;]&#125;</span><br><span class="line"></span><br><span class="line">rs.initiate(config) <span class="comment">#完成副本的创建</span></span><br><span class="line">rs.status() <span class="comment"># 查看副本集的状态</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>链接<br><img src="/images/mongo-connection.png" alt="connection"></p>
+</li>
 </ol>
-</blockquote>
-<h3 id="输入用例"><a href="#输入用例" class="headerlink" title="输入用例"></a>输入用例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Input: word1 = &quot;horse&quot;, word2 = &quot;ros&quot;</span><br><span class="line">Output: 3</span><br><span class="line">Explanation:</span><br><span class="line">horse -&gt; rorse (replace &apos;h&apos; with &apos;r&apos;)</span><br><span class="line">rorse -&gt; rose (remove &apos;r&apos;)</span><br><span class="line">rose -&gt; ros (remove &apos;e&apos;)</span><br></pre></td></tr></table></figure>
-<h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><blockquote>
-<p>使用动态规划来解决，<code>dp[i][j]</code> 含义是word1前i个字符变成word2前j个字符所需的最小步数.<br>由此我们可以得出状态转移方程:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">当word1[i] == word2[j]的时候 dp[i][j] = dp[i-1][j-1] 不需要操作</span><br><span class="line">当word1[i] != word2[j]的时候 dp[i][j] = min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1])+1寻找最细哦啊的操作步骤</span><br></pre></td></tr></table></figure></p>
-</blockquote>
-<h4 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">minDistance</span><span class="params">(word1 <span class="keyword">string</span>, word2 <span class="keyword">string</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	w1, w2 := <span class="built_in">len</span>(word1), <span class="built_in">len</span>(word2)</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(word2) == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> w1</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> <span class="built_in">len</span>(word1) == <span class="number">0</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> w2</span><br><span class="line">	&#125;</span><br><span class="line">	dp := <span class="built_in">make</span>([][]<span class="keyword">int</span>, w1+<span class="number">1</span>)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; w1+<span class="number">1</span>; i++ &#123;</span><br><span class="line">		dp[i] = <span class="built_in">make</span>([]<span class="keyword">int</span>, w2+<span class="number">1</span>)</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 初始化dp</span></span><br><span class="line">    <span class="comment">// word1与长度为0的word2做匹配的时候所需的步数.</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; w1+<span class="number">1</span>; i++ &#123;</span><br><span class="line">		dp[i][<span class="number">0</span>] = i</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// word1长度为0与word2进行匹配所需的步数</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; w2+<span class="number">1</span>; i++ &#123;</span><br><span class="line">		dp[<span class="number">0</span>][i] = i</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt;= w1; i++ &#123;</span><br><span class="line">		<span class="keyword">for</span> j := <span class="number">1</span>; j &lt;= w2; j++ &#123;</span><br><span class="line">			<span class="keyword">if</span> word1[i<span class="number">-1</span>] == word2[j<span class="number">-1</span>] &#123;</span><br><span class="line">				dp[i][j] = dp[i<span class="number">-1</span>][j<span class="number">-1</span>]</span><br><span class="line">			&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">				dp[i][j] = min(dp[i<span class="number">-1</span>][j], dp[i][j<span class="number">-1</span>], dp[i<span class="number">-1</span>][j<span class="number">-1</span>])+<span class="number">1</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> dp[w1][w2]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">min</span><span class="params">(args ...<span class="keyword">int</span>)</span> <span class="title">int</span></span> &#123;</span><br><span class="line">	minNum := args[<span class="number">0</span>]</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">1</span>; i &lt; <span class="built_in">len</span>(args); i++ &#123;</span><br><span class="line">		<span class="keyword">if</span> args[i] &lt; minNum &#123;</span><br><span class="line">			minNum = args[i]</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> minNum</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="To-sum-up"><a href="#To-sum-up" class="headerlink" title="To sum up"></a>To sum up</h2><blockquote>
-<p>在做本题的时候自己想到的是类似最长公共子序列的求解，但是疏忽了不想等的时更新dp的规则，以及初始化的问题。<br>最终参考了<a href="http://hs-yeah.github.io/acm/2014/07/16/01-HNUOJ-10411" target="_blank" rel="noopener">ACM 题目：字符串的修改</a>使得此题解决。</p>
-</blockquote>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.docs4dev.com/docs/zh/mongodb/v3.6/reference/tutorial-expand-replica-set.html" target="_blank" rel="noopener">mongo副本集文档</a><br><a href="http://longofo.cc/使用docker搭建mongodb副本集.html" target="_blank" rel="noopener">使用docker搭建mongodb副本集
+</a></p>
 
       
     </div>
@@ -279,16 +359,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2019/04/17/1/">
-                    mac下如何使用百度云的加速下载
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2019/04/12/2/">
-                    LRUCache(最近最久未使用算法)题解
+                <a href="/2020/03/14/1/">
+                    LFU Cache算法实现
                 </a>
             </div>
         
@@ -300,7 +374,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Edit-Distance"><span class="toc-number">1.</span> <span class="toc-text">Edit Distance</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#题目描述"><span class="toc-number">1.1.</span> <span class="toc-text">题目描述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#输入用例"><span class="toc-number">1.2.</span> <span class="toc-text">输入用例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#解决方法"><span class="toc-number">1.3.</span> <span class="toc-text">解决方法</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分析"><span class="toc-number">1.3.1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#代码"><span class="toc-number">1.3.2.</span> <span class="toc-text">代码</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#To-sum-up"><span class="toc-number">2.</span> <span class="toc-text">To sum up</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#依赖"><span class="toc-number">1.</span> <span class="toc-text">依赖</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#副本集介绍"><span class="toc-number">2.</span> <span class="toc-text">副本集介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#副本集Oplog"><span class="toc-number">3.</span> <span class="toc-text">副本集Oplog</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Oplog大小"><span class="toc-number">3.0.1.</span> <span class="toc-text">Oplog大小</span></a></li></ol></li></ol><li class="toc-item toc-level-2"><a class="toc-link" href="#创建副本集"><span class="toc-number">4.</span> <span class="toc-text">创建副本集</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参考"><span class="toc-number">5.</span> <span class="toc-text">参考</span></a></li>
         
     </div>
     <style>
@@ -344,15 +418,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2019/04/17/1/" title="上一篇: mac下如何使用百度云的加速下载">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2019/04/12/2/" title="下一篇: LRUCache(最近最久未使用算法)题解">
+            <a href="/2020/03/14/1/" title="下一篇: LFU Cache算法实现">
                 <i class="fa fa-angle-right"></i>
             </a>
         
