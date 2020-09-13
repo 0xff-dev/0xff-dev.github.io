@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>azkaban使用</title>
+      <link href="/2020/09/13/1/"/>
+      <url>/2020/09/13/1/</url>
+      
+        <content type="html"><![CDATA[<p>&nbsp;&nbsp; 练习使用azkaban这个工具<br><a id="more"></a></p><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><blockquote><p>Azkaban是由Linkedin公司推出的一个批量工作流任务调度器，用于在一个工作流内以一个特定的顺序运行一组工作和流程。Azkaban使用job配置文件建立任务之间的依赖关系，并提供一个易于使用的web用户界面维护和跟踪你的工作流。</p></blockquote><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://github.com/azkaban/azkaban/archive/3.90.0.tar.gz</span><br><span class="line">tar -zxvf azkaban-3.90.0.tar.gz</span><br><span class="line">cd azkaban-3.90.0/ &amp;&amp; ./gradlew build installDist</span><br></pre></td></tr></table></figure><blockquote><p><code>azkaban</code>提供了三种使用方式</p></blockquote><ol><li><p>solo-server，将web-server与executor-server在同一个进程中</p><blockquote><p>通过上面的方式编译后，在<code>azkaban-solo-server/build/install/azkaban-solo-server</code>目录可以看到启动脚本，直接启动，就可以通过<code>ip:8081</code>即可访问。</p></blockquote></li><li><p>将web-server与executor-server部署在不同的进程</p><blockquote><p>这个首先需要我们部署一个mysql, 官方的推荐是<code>master-slave</code>的集群模式，这里只是测试，就单独部署mysql即可。<br>分别去<code>azkaban-web-server/build/install/azkaban-web-server</code>和<code>azkaba-exec-server/build/install/azkaban-exec-server</code>下面<code>azkaban.properties</code>配置数据库信息，然后分别在<code>bin</code>目录下执行相应的启动脚本，完成<code>web-server</code>和<code>executor-server</code>进程的启动<br>检验executor是否成功启动</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd azkaban-exec-server/build/install/azkaban-exec-server</span><br><span class="line">curl -G "localhost:$(&lt;./executor.port)/executor?action=activate" &amp;&amp; echo</span><br></pre></td></tr></table></figure></blockquote></li><li><p>web-server与executor部署在不同的主机</p><blockquote><p>这个方式目前没有那么多机器就先不做部署测试。</p></blockquote></li></ol><h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><p>编写一个简单的job如下，然后将文件打包为<code>job.zip</code>, 上传到web界面。就可以看到执行结果了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#command.job</span><br><span class="line">type=command</span><br><span class="line">command=echo &apos;Hello World&apos;</span><br></pre></td></tr></table></figure></p><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://azkaban.readthedocs.io/en/latest/" target="_blank" rel="noopener">doc</a></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> azkaban </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>kubernetes在线使用以及验证PodTopologySpreadConstraints</title>
       <link href="/2020/08/25/1/"/>
       <url>/2020/08/25/1/</url>
